@@ -4,7 +4,7 @@ const mysql = require('mysql2/promise');
 const multer = require('multer');
 const path = require('path');
 
-// 🔌 CONEXIÓN AJUSTADA PARA FUNCIONAR SEGURO
+// 🔌 CONEXIÓN FINAL CORRECTA (SIN SSL)
 const pool = mysql.createPool({
   host: 'mysql-lisbeth.alwaysdata.net',
   user: 'lisbeth',
@@ -12,11 +12,8 @@ const pool = mysql.createPool({
   database: 'lisbeth_base2026',
   waitForConnections: true,
   connectionLimit: 5,
-  queueLimit: 0,
-  ssl: {
-    rejectUnauthorized: false,
-    minVersion: 'TLSv1.2'
-  } // ✅ Conexión segura compatible
+  queueLimit: 0
+  // ❌ QUITAMOS TODA LA SECCIÓN ssl: {...}
 });
 
 // 📁 Configuración para guardar imágenes
