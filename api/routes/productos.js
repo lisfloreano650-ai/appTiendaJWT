@@ -4,16 +4,19 @@ const mysql = require('mysql2/promise');
 const multer = require('multer');
 const path = require('path');
 
-// 🔌 CONEXIÓN CORREGIDA Y SEGURA PARA ALWAYSDATA
+// 🔌 CONEXIÓN AJUSTADA PARA FUNCIONAR SEGURO
 const pool = mysql.createPool({
   host: 'mysql-lisbeth.alwaysdata.net',
   user: 'lisbeth',
-  password: 'lisbeth2026',       // Tu contraseña ya está puesta
+  password: 'lisbeth2026',
   database: 'lisbeth_base2026',
   waitForConnections: true,
   connectionLimit: 5,
   queueLimit: 0,
-  ssl: { rejectUnauthorized: false }  // ✅ ESTA LÍNEA ES LA QUE FALTABA
+  ssl: {
+    rejectUnauthorized: false,
+    minVersion: 'TLSv1.2'
+  } // ✅ Conexión segura compatible
 });
 
 // 📁 Configuración para guardar imágenes
@@ -42,7 +45,7 @@ router.get('/', async (req, res) => {
     console.error('🔴 Error en consulta:', err.message);
     res.status(500).json({ 
       error: 'Error al cargar productos',
-      detalle: err.message  // ✅ Muestra el motivo exacto si falla
+      detalle: err.message
     });
   }
 });
