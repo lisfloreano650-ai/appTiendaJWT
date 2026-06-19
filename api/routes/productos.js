@@ -4,12 +4,16 @@ const mysql = require('mysql2/promise');
 const multer = require('multer');
 const path = require('path');
 
-// 🔌 CONEXIÓN REAL A TU BASE DE DATOS EN ALWAYSDATA
+// 🔌 CONEXIÓN CORREGIDA Y SEGURA PARA ALWAYSDATA
 const pool = mysql.createPool({
   host: 'mysql-lisbeth.alwaysdata.net',
   user: 'lisbeth',
-  password: 'lisbeth2026',       // ← PON AQUÍ TU CONTRASEÑA REAL (la que usas para entrar a AlwaysData)
-  database: 'lisbeth_base2026'
+  password: 'lisbeth2026',       // Tu contraseña ya está puesta
+  database: 'lisbeth_base2026',
+  waitForConnections: true,
+  connectionLimit: 5,
+  queueLimit: 0,
+  ssl: { rejectUnauthorized: false }  // ✅ ESTA LÍNEA ES LA QUE FALTABA
 });
 
 // 📁 Configuración para guardar imágenes
@@ -35,8 +39,11 @@ router.get('/', async (req, res) => {
     const [productos] = await pool.query('SELECT * FROM productos ORDER BY id DESC');
     res.json(productos);
   } catch (err) {
-    console.error('Error en consulta:', err);
-    res.status(500).json({ error: 'Error al cargar productos' });
+    console.error('🔴 Error en consulta:', err.message);
+    res.status(500).json({ 
+      error: 'Error al cargar productos',
+      detalle: err.message  // ✅ Muestra el motivo exacto si falla
+    });
   }
 });
 
@@ -53,8 +60,11 @@ router.post('/', subir.single('imagen'), async (req, res) => {
 
     res.json({ mensaje: '✅ Producto guardado correctamente' });
   } catch (err) {
-    console.error('Error al guardar:', err);
-    res.status(500).json({ error: '❌ Error al guardar producto' });
+    console.error('🔴 Error al guardar:', err.message);
+    res.status(500).json({ 
+      error: '❌ Error al guardar producto',
+      detalle: err.message
+    });
   }
 });
 
