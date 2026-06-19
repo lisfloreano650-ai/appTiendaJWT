@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Agregar Producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="stacked">Nombre</ion-label>
+    <ion-input type="text" [(ngModel)]="producto.nombre" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Descripción</ion-label>
+    <ion-textarea rows="3" [(ngModel)]="producto.descripcion"></ion-textarea>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Precio</ion-label>
+    <ion-input type="number" step="0.01" [(ngModel)]="producto.precio" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Imagen</ion-label>
+    <input type="file" accept="image/*" (change)="seleccionarImagen($event)" />
+  </ion-item>
+
+  <ion-button expand="block" color="success" class="ion-margin-top" (click)="guardarProducto()">
+    Guardar Producto
+  </ion-button>
+</ion-content>

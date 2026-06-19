@@ -3,6 +3,7 @@ import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { provideIonicAngular } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
 
 // Aquí importamos las páginas que ya tienes
 import { HomePage } from './home/home.page';
@@ -18,7 +19,15 @@ export const routes: Routes = [
   { path: 'home', component: HomePage },
   { path: 'clientes', component: ClientesPage },
   { path: 'nuevo-cliente', component: NuevoClientePage },
-  { path: 'detalle-cliente/:id', component: DetalleClientePage } // Para editar
+  { path: 'detalle-cliente/:id', component: DetalleClientePage },   {
+    path: 'productos',
+    loadComponent: () => import('./pages/productos/productos.page').then( m => m.ProductosPage)
+  },
+  {
+    path: 'catalogo',
+    loadComponent: () => import('./pages/catalogo/catalogo.page').then( m => m.CatalogoPage)
+  }
+// Para editar
 ];
 
 // Configuración para que funcione todo
