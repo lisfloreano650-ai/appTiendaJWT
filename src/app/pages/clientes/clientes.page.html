@@ -1,23 +1,36 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Clientes</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Clientes - base2026</ion-title>
+    <ion-button slot="end" routerLink="/nuevo-cliente">NUEVO</ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-
-  <ion-list>
-
-    <ion-item *ngFor="let cliente of listaClientes">
-      {{ cliente.cli_nombre }}
+  <ion-list *ngIf="clientes.length > 0">
+    <ion-item *ngFor="let cli of clientes">
+      <ion-label>
+        <h2><strong>Nombre:</strong> {{ cli.cli_nombre }}</h2>
+        <p><strong>Identificación:</strong> {{ cli.cli_identificacion }}</p>
+        <p><strong>Correo:</strong> {{ cli.cli_correo }}</p>
+        <p><strong>Teléfono:</strong> {{ cli.cli_telefono }}</p>
+        <p><strong>Dirección:</strong> {{ cli.cli_direccion }}</p>
+        <p><strong>Ciudad / País:</strong> {{ cli.cli_ciudad }} - {{ cli.cli_pais }}</p>
+      </ion-label>
+      <ion-button fill="clear" color="warning" (click)="irAEditar(cli.cli_id)">EDITAR</ion-button>
+      <ion-button fill="clear" color="danger" (click)="borrarCliente(cli.cli_id)">ELIMINAR</ion-button>
     </ion-item>
-
   </ion-list>
 
-  <br>
+  <p *ngIf="clientes.length === 0" class="ion-text-center ion-padding-top">
+    No hay clientes registrados en la base base2026
+  </p>
 
-  <ion-button expand="block" (click)="nuevoCliente()">
-    Nuevo Cliente
-  </ion-button>
-
+  <ion-toast
+    [isOpen]="mostrarToast"
+    [message]="mensaje"
+    [color]="colorToast"
+    duration="3000"
+    position="bottom"
+    (didDismiss)="mostrarToast = false"
+  ></ion-toast>
 </ion-content>

@@ -1,77 +1,70 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-import {
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonItem,
-  IonInput,
-  IonButton
+import { 
+  IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, 
+  IonInput, IonButton, IonToast, IonBackButton, IonButtons 
 } from '@ionic/angular/standalone';
-
-import { Clientes } from '../../services/clientes';
+import { ClientesService } from '../../services/clientes';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nuevo-cliente',
   templateUrl: './nuevo-cliente.page.html',
-  styleUrls: ['./nuevo-cliente.page.scss'],
   standalone: true,
   imports: [
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    CommonModule,
     FormsModule,
-    IonItem,
-    IonInput,
-    IonButton
+    IonHeader, IonToolbar, IonTitle, IonContent,
+    IonItem, IonLabel, IonInput, IonButton,
+    IonToast, IonBackButton, IonButtons
   ]
 })
 export class NuevoClientePage {
+  identificacion = '';
+  nombre = '';
+  correo = '';
+  telefono = '';
+  direccion = '';
+  ciudad = '';
+  pais = '';
 
-  nombre: string = '';
-  correo: string = '';
-  telefono: string = '';
+  mostrarToast = false;
+  mensaje = '';
+  colorToast = 'success';
 
-  constructor(private clienteService: Clientes) { }
+  constructor(private srv: ClientesService, private router: Router) {}
 
-  guardar() {
+  guardarCliente() {
+    if (!this.identificacion || !this.nombre || !this.correo || !this.telefono) {
+      this.mensaje = '⚠️ Identificación, nombre, correo y teléfono son obligatorios';
+      this.colorToast = 'warning';
+      this.mostrarToast = true;
+      return;
+    }
 
-    const cliente = {
-      cli_identificacion: '1234567890',
-      cli_nombre: this.nombre,
-      cli_telefono: this.telefono,
-      cli_correo: this.correo,
-      cli_direccion: 'La Libertad',
-      cli_pais: 'Ecuador',
-      cli_ciudad: 'Santa Elena'
+    const datos = {
+      identificacion: this.identificacion,
+      nombre: this.nombre,
+      correo: this.correo,
+      telefono: this.telefono,
+      direccion: this.direccion,
+      ciudad: this.ciudad,
+      pais: this.pais
     };
 
-    this.clienteService.crearCliente(cliente).subscribe({
-      next: (resp) => {
-
-        console.log('RESPUESTA:', resp);
-
-        alert('Cliente guardado en MySQL');
-
-        this.nombre = '';
-        this.correo = '';
-        this.telefono = '';
-
+    this.srv.guardar(datos).subscribe({
+      next: (resp: any) => {
+        this.mensaje = resp.mensaje;
+        this.colorToast = resp.ok ? 'success' : 'danger';
+        this.mostrarToast = true;
+        if (resp.ok) {
+          setTimeout(() => this.router.navigate(['/clientes']), 1200);
+        }
       },
-
-      error: (err) => {
-
-        console.error('ERROR COMPLETO:', err);
-
-        alert(JSON.stringify(err.error));
-
+      error: () => {
+        this.mensaje = '❌ Error al conectar con la base de datos';
+        this.colorToast = 'danger';
+        this.mostrarToast = true;
       }
     });
-
   }
 }

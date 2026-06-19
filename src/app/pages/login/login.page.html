@@ -1,32 +1,32 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Iniciar Sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+  <h2 class="ion-text-center ion-padding-top">Acceso al Sistema</h2>
 
   <ion-item>
-    <ion-input
-      label="Usuario"
-      labelPlacement="floating">
-    </ion-input>
+    <ion-label position="stacked">Usuario</ion-label>
+    <ion-input type="text" [(ngModel)]="usuario" placeholder="Escribe tu usuario"></ion-input>
   </ion-item>
 
-  <br>
-
-  <ion-item>
-    <ion-input
-      type="password"
-      label="Clave"
-      labelPlacement="floating">
-    </ion-input>
+  <ion-item class="ion-margin-top">
+    <ion-label position="stacked">Contraseña</ion-label>
+    <ion-input type="text" [(ngModel)]="clave" placeholder="Pega la clave encriptada tal cual está en la base"></ion-input>
   </ion-item>
 
-  <br><br>
-
-  <ion-button expand="block" (click)="ingresar()">
-    Ingresar
+  <ion-button expand="block" color="primary" class="ion-margin-top" (click)="ingresar()">
+    INGRESAR
   </ion-button>
 
+  <ion-toast
+    [isOpen]="mostrarToast"
+    [message]="mensaje"
+    [color]="colorToast"
+    duration="3000"
+    position="bottom"
+    (didDismiss)="mostrarToast = false"
+  ></ion-toast>
 </ion-content>

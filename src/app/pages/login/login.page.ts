@@ -1,41 +1,45 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonInput, IonButton, IonToast } from '@ionic/angular/standalone';
+import { ClientesService } from '../../services/clientes';
 import { Router } from '@angular/router';
-
-import {
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonItem,
-  IonInput,
-  IonButton
-} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    CommonModule,
-    FormsModule,
-    IonItem,
-    IonInput,
-    IonButton
-  ]
+  imports: [FormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonInput, IonButton, IonToast]
 })
 export class LoginPage {
+  usuario = '';
+  clave = '';
+  mostrarToast = false;
+  mensaje = '';
+  colorToast = 'danger';
 
-  constructor(private router: Router) {}
+  constructor(private servicio: ClientesService, private router: Router) {}
 
   ingresar() {
-    this.router.navigate(['/clientes']);
-  }
+    if (!this.usuario || !this.clave) {
+      this.mensaje = '⚠️ Completa ambos campos';
+      this.mostrarToast = true;
+      return;
+    }
 
+    this.servicio.validarAcceso({ usuario: this.usuario, clave: this.clave }).subscribe({
+      next: (respuesta: any) => {
+        this.mensaje = respuesta.mensaje;
+        this.colorToast = respuesta.ok ? 'success' : 'danger';
+        this.mostrarToast = true;
+
+        if (respuesta.ok) {
+          setTimeout(() => this.router.navigate(['/clientes']), 1000);
+        }
+      },
+      error: () => {
+        this.mensaje = '❌ No hay conexión con el servidor';
+        this.mostrarToast = true;
+      }
+    });
+  }
 }
