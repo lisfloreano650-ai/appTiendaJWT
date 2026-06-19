@@ -1,4 +1,4 @@
-// 🔌 CONEXIÓN DEFINITIVA SIN BLOQUEOS
+// 🔌 CONEXIÓN SEGURA Y COMPATIBLE
 const pool = mysql.createPool({
   host: 'mysql-lisbeth.alwaysdata.net',
   user: 'lisbeth',
@@ -6,6 +6,5 @@ const pool = mysql.createPool({
   database: 'lisbeth_base2026',
   waitForConnections: true,
   connectionLimit: 5,
-  queueLimit: 0,
-  ssl: { rejectUnauthorized: false }
+  queueLimit: 0
 });
