@@ -8,7 +8,7 @@ const path = require('path');
 const pool = mysql.createPool({
   host: 'mysql-lisbeth.alwaysdata.net',
   user: 'lisbeth',
-  password: 'AQUÍ_PON_TU_CONTRASEÑA', // ⚠️ Cambia esto por tu contraseña real
+  password: 'TuClaveRealAqui1232026lis',
   database: 'lisbeth_base2026'
 });
 
