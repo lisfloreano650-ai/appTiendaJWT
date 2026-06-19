@@ -4,7 +4,7 @@ const mysql = require('mysql2/promise');
 const multer = require('multer');
 const path = require('path');
 
-// 🔌 CONEXIÓN FINAL CORRECTA (SIN SSL)
+// 🔌 CONEXIÓN CORRECTA
 const pool = mysql.createPool({
   host: 'mysql-lisbeth.alwaysdata.net',
   user: 'lisbeth',
@@ -13,7 +13,6 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 5,
   queueLimit: 0
-  // ❌ QUITAMOS TODA LA SECCIÓN ssl: {...}
 });
 
 // 📁 Configuración para guardar imágenes
