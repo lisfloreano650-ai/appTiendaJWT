@@ -4,11 +4,11 @@ const mysql = require('mysql2/promise');
 const multer = require('multer');
 const path = require('path');
 
-// 🔌 Conexión a tu base de datos AlwaysData
+// 🔌 CONEXIÓN REAL A TU BASE DE DATOS EN ALWAYSDATA
 const pool = mysql.createPool({
   host: 'mysql-lisbeth.alwaysdata.net',
   user: 'lisbeth',
-  password: 'TuClaveRealAqui1232026lis',
+  password: 'lisbeth2026',       // ← PON AQUÍ TU CONTRASEÑA REAL (la que usas para entrar a AlwaysData)
   database: 'lisbeth_base2026'
 });
 
@@ -35,6 +35,7 @@ router.get('/', async (req, res) => {
     const [productos] = await pool.query('SELECT * FROM productos ORDER BY id DESC');
     res.json(productos);
   } catch (err) {
+    console.error('Error en consulta:', err);
     res.status(500).json({ error: 'Error al cargar productos' });
   }
 });
@@ -52,6 +53,7 @@ router.post('/', subir.single('imagen'), async (req, res) => {
 
     res.json({ mensaje: '✅ Producto guardado correctamente' });
   } catch (err) {
+    console.error('Error al guardar:', err);
     res.status(500).json({ error: '❌ Error al guardar producto' });
   }
 });

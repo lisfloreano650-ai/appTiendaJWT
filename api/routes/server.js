@@ -14,4 +14,4 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/productos', require('./routes/productos'));
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`API corriendo en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`✅ API corriendo en puerto ${PORT}`));
